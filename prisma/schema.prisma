@@ -13,3 +13,74 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  userId    String   @id @default(uuid())
+  userName  String
+  userEmail String   @unique
+  password  String
+  DOB       DateTime
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  isDeleted Boolean  @default(false)
+
+  profile   Profile?
+  exercises Exercise[]
+  records   Record[]
+}
+
+model Profile {
+  profileId  String    @id @default(uuid())
+  profileImg String
+  weight     Float
+  height     Float
+  createdAt  DateTime  @default(now())
+  updateAt   DateTime?
+
+  userId       String @unique
+  profileOwner User   @relation(fields: [userId], references: [userId])
+}
+
+model Exercise {
+  exerciseId   String    @id @default(uuid())
+  exerciseName String
+  description  String?
+  createdAt    DateTime  @default(now())
+  updateAt     DateTime?
+  isDeleted    Boolean   @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [userId])
+
+  exerciseRecords ExerciseRecord[]
+}
+
+model Record {
+  recordId        String           @id @default(uuid())
+  note            String?
+  startTime       DateTime?
+  endTime         DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime?
+  exerciseRecords ExerciseRecord[]
+  isDeleted       Boolean          @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [userId])
+}
+
+model ExerciseRecord {
+  eRecordId   String    @id @default(uuid())
+  exerciseId  String
+  timesPerRep Int? // <== or miles
+  rep         Int       @default(1)
+  weight      Int?
+  duration    Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime?
+  isDeleted   Boolean   @default(false)
+
+  recordId     String
+  parentRecord Record   @relation(fields: [recordId], references: [recordId])
+  exercise     Exercise @relation(fields: [exerciseId], references: [exerciseId])
+}
