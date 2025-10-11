@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model AUser {
   userId    String   @id @default(uuid())
   userName  String
   userEmail String   @unique
@@ -38,7 +38,7 @@ model Profile {
   updateAt   DateTime?
 
   userId       String @unique
-  profileOwner User   @relation(fields: [userId], references: [userId])
+  profileOwner AUser  @relation(fields: [userId], references: [userId])
 }
 
 model Exercise {
@@ -50,7 +50,7 @@ model Exercise {
   isDeleted    Boolean   @default(false)
 
   userId String
-  user   User   @relation(fields: [userId], references: [userId])
+  user   AUser  @relation(fields: [userId], references: [userId])
 
   exerciseRecords ExerciseRecord[]
 }
@@ -66,7 +66,7 @@ model Record {
   isDeleted       Boolean          @default(false)
 
   userId String
-  user   User   @relation(fields: [userId], references: [userId])
+  user   AUser  @relation(fields: [userId], references: [userId])
 }
 
 model ExerciseRecord {
