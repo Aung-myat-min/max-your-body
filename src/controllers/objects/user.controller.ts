@@ -6,7 +6,6 @@ import {generateVerificationCode, verifyCode} from "@/controllers/objects/verifi
 import {randomString} from "@/lib/generate.utils";
 
 const prisma = new PrismaClient();
-
 // GET USER
 export async function getUser(userId: string): Promise<ResponseHelper<AUser | null>> {
     let response: ResponseHelper<AUser | null>;
@@ -109,7 +108,7 @@ export async function sendUserEmailUpdate(userId: string, newEmail: string): Pro
         }
     }catch(err){
         console.error("Error getting user", err);
-        response = ResponseHelper.ServerErr("An Error occurred while getting user");
+        response = ResponseHelper.ServerErr("An Error occurred while sending email for email changes");
     }
     return response;
 }
@@ -146,7 +145,7 @@ export async function updateUserEmail(userId: string, newEmail: string, code: st
         }
     }catch(err){
         console.error("Error getting user", err);
-        response = ResponseHelper.ServerErr("An Error occurred while getting user");
+        response = ResponseHelper.ServerErr("An Error occurred while updating user new email");
     }
     return response;
 }
@@ -177,7 +176,7 @@ export async function deleteUser(userId: string): Promise<ResponseHelper<null>> 
         }
     }catch(err){
         console.error("Error getting user", err);
-        response = ResponseHelper.ServerErr("An Error occurred while getting user");
+        response = ResponseHelper.ServerErr("An Error occurred while deleting user");
     }
     return response;
 }
@@ -216,7 +215,7 @@ export async function verifyUser(userId: string, code: string): Promise<Response
         }
     }catch(err){
         console.error("Error getting user", err);
-        response = ResponseHelper.ServerErr("An Error occurred while getting user");
+        response = ResponseHelper.ServerErr("An Error occurred while verifying user");
     }
     return response;
 }
