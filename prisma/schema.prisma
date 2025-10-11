@@ -84,3 +84,11 @@ model ExerciseRecord {
   parentRecord Record   @relation(fields: [recordId], references: [recordId])
   exercise     Exercise @relation(fields: [exerciseId], references: [exerciseId])
 }
+
+model VerificationCode {
+  codeId    String   @id @default(uuid())
+  email     String
+  code      Int
+  duration  Int //<= in seconds
+  createdAt DateTime @default(now())
+}
