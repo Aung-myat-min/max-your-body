@@ -1,14 +1,14 @@
-import { PrismaClient } from "@/generated/prisma";
+import {PrismaClient, VerificationCode} from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 const durationInMs = 1000 * 60 * 60 * 5;
 
 // Generate Verification Code
-export async function generateVerificationCode({email}: {email: string}): Promise<boolean>{
+export async function generateVerificationCode({email}: {email: string}): Promise<VerificationCode | null>{
     try{
         const code = Math.floor(Math.random() * 1000000);
 
-        await prisma.verificationCode.create({
+        const newCode = await prisma.verificationCode.create({
             data: {
             email: email,
                 code: code.toString().padStart(6, '0'),
@@ -16,10 +16,10 @@ export async function generateVerificationCode({email}: {email: string}): Promis
             }});
 
         console.log(`Generated Verification Code for ${email}, ${code.toString().padStart(6, '0')}`)
-        return true
+        return newCode
     }catch (e) {
         console.error("Error generating verification code: ", e);
-        return false;
+        return null;
     }
 }
 
