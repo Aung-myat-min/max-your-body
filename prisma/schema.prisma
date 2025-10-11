@@ -86,9 +86,11 @@ model ExerciseRecord {
 }
 
 model VerificationCode {
-  codeId    String   @id @default(uuid())
+  codeId    String    @id @default(uuid())
   email     String
-  code      Int
-  duration  Int //<= in seconds
-  createdAt DateTime @default(now())
+  code      String
+  duration  Int //<= in miliseconds
+  isUsed    Boolean   @default(false)
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
 }
